@@ -1,8 +1,8 @@
-# React Accounts UI for Meteor 1.3 - Semantic UI
+# Semantic UI – Accounts UI for React in Meteor 1.3
 
 Current version 1.0.0
 
-![React Accounts UI for Meteor 1.3 - Semantic UI](https://raw.githubusercontent.com/studiointeract/react-accounts-ui-semantic-ui/master/react-accounts-ui-semantic-ui.gif)
+![Semantic UI – Accounts UI for React in Meteor 1.3](https://raw.githubusercontent.com/studiointeract/react-accounts-ui-semantic-ui/master/react-accounts-ui-semantic-ui.gif)
 
 ## Features
 
@@ -17,11 +17,11 @@ Current version 1.0.0
 
 ### Based on and extends studiointeract:react-accounts-ui
 
-[https://atmospherejs.com/std/react-accounts-ui](https://atmospherejs.com/std/react-accounts-ui)
+[https://atmospherejs.com/std/accounts-semantic-ui](https://atmospherejs.com/std/accounts-semantic-ui)
 
 ## Installation
 
-`meteor add std:react-accounts-ui-semantic-ui`
+`meteor add std:accounts-semantic-ui`
 
 ## Configuration
 
@@ -33,12 +33,12 @@ We support the standard [configuration in the account-ui package](http://docs.me
 
 `meteor add accounts-password`  
 `meteor add semantic:ui-css`  
-`meteor add std:react-accounts-ui-semantic-ui`
+`meteor add std:accounts-semantic-ui`
 
 ```javascript
 
 import React from 'react';
-import { Accounts } from 'meteor/std:react-accounts-ui-semantic-ui';
+import { Accounts } from 'meteor/std:accounts-semantic-ui';
 
 Accounts.ui.config({
   passwordSignupFields: 'NO_PASSWORD',
@@ -55,13 +55,13 @@ if (Meteor.isClient) {
 
 `meteor add accounts-password`  
 `meteor add semantic:ui-css`  
-`meteor add std:react-accounts-ui-semantic-ui`  
+`meteor add std:accounts-semantic-ui`  
 `meteor add kadira:flow-router-ssr`
 
 ```javascript
 
 import { FlowRouter } from 'meteor/kadira:flow-router-ssr';
-import { Accounts } from 'meteor/std:react-accounts-ui-semantic-ui';
+import { Accounts } from 'meteor/std:accounts-semantic-ui';
 import React from 'react';
 
 Accounts.ui.config({
