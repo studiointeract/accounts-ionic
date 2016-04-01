@@ -17,28 +17,28 @@ Current version 1.0.0
 
 ### Based on and extends studiointeract:react-accounts-ui
 
-[https://atmospherejs.com/studiointeract/react-accounts-ui](https://atmospherejs.com/studiointeract/react-accounts-ui)
+[https://atmospherejs.com/std/react-accounts-ui](https://atmospherejs.com/std/react-accounts-ui)
 
 ## Installation
 
-`meteor add studiointeract:react-accounts-ui-semantic-ui`
+`meteor add std:react-accounts-ui-semantic-ui`
 
 ## Configuration
 
 We support the standard [configuration in the account-ui package](http://docs.meteor.com/#/full/accounts_ui_config). But have extended with some new options.
 
-### [Accounts.ui.config(options)](https://github.com/studiointeract/react-accounts-ui#configuration)
+### [Accounts.ui.config(options)](https://github.com/std/react-accounts-ui#configuration)
 
 ### Example setup (Meteor 1.3)
 
 `meteor add accounts-password`  
 `meteor add semantic:ui-css`  
-`meteor add studiointeract:react-accounts-ui-semantic-ui`
+`meteor add std:react-accounts-ui-semantic-ui`
 
 ```javascript
 
 import React from 'react';
-import { Accounts } from 'meteor/studiointeract:react-accounts-ui-semantic-ui';
+import { Accounts } from 'meteor/std:react-accounts-ui-semantic-ui';
 
 Accounts.ui.config({
   passwordSignupFields: 'NO_PASSWORD',
@@ -55,13 +55,13 @@ if (Meteor.isClient) {
 
 `meteor add accounts-password`  
 `meteor add semantic:ui-css`  
-`meteor add studiointeract:react-accounts-ui-semantic-ui`  
+`meteor add std:react-accounts-ui-semantic-ui`  
 `meteor add kadira:flow-router-ssr`
 
 ```javascript
 
 import { FlowRouter } from 'meteor/kadira:flow-router-ssr';
-import { Accounts } from 'meteor/studiointeract:react-accounts-ui-semantic-ui';
+import { Accounts } from 'meteor/std:react-accounts-ui-semantic-ui';
 import React from 'react';
 
 Accounts.ui.config({
