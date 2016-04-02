@@ -17,7 +17,7 @@ Current version 1.1.1
 
 ### Based on and extends std:accounts-ui
 
-[https://atmospherejs.com/std/accounts-semantic](https://atmospherejs.com/std/accounts-semantic)
+[https://atmospherejs.com/std/accounts-ui](https://atmospherejs.com/std/accounts-ui)
 
 ## Installation
 
