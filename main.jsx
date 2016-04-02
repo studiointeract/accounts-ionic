@@ -1,5 +1,5 @@
 import React from 'react';
-import Accounts from 'meteor/std:accounts-ui';
+import { Accounts, STATES } from 'meteor/std:accounts-ui';
 
 /**
  * Form.propTypes = {
@@ -11,12 +11,19 @@ import Accounts from 'meteor/std:accounts-ui';
  */
 class Form extends Accounts.ui.Form {
   render() {
-    const { fields, buttons, error, message, ready } = this.props;
+    const {
+      hasPasswordService,
+      oauthServices,
+      fields,
+      buttons,
+      error,
+      message,
+      ready = true,
+      className,
+      formState
+    } = this.props;
     return (
-      <form className={[
-        "ui form",
-        ready ? "" : "loading"
-      ].join(' ')} onSubmit={ evt => evt.preventDefault() }>
+      <form className={[ "accounts ui form", className ].join(' ')}>
         {Object.keys(fields).length > 0 ? (
           <Accounts.ui.Fields fields={ fields } />
         ): null }
@@ -44,6 +51,14 @@ class Form extends Accounts.ui.Form {
         { buttons['switchToSignOut'] ? (
           <Button {...buttons['switchToSignOut']} type="button" />
         ): null }
+        { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
+          <div className="or-sep">
+            <Accounts.ui.PasswordOrService oauthServices={ oauthServices } />
+          </div>
+        ) : null }
+        { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
+            <Accounts.ui.SocialButtons oauthServices={ oauthServices } />
+        ) : null }
         <Accounts.ui.FormMessage className="ui message" style={{display: 'block'}} {...message} />
       </form>
     );
@@ -53,9 +68,9 @@ class Form extends Accounts.ui.Form {
 class Buttons extends Accounts.ui.Buttons {}
 class Button extends Accounts.ui.Button {
   render() {
-    const { label, type, disabled = false, onClick, className } = this.props;
+    const { label, type, disabled = false, onClick, className, icon } = this.props;
     return type == 'link' ? (
-      <a style={{cursor: 'pointer'}} className={ className } onClick={ onClick }>{ label }</a>
+      <a style={{cursor: 'pointer'}} className={ className } onClick={ onClick }>{ icon ? (<i className={["icon", icon].join(' ')} />) : null }{ label }</a>
     ) : (
       <button className={ [
           'ui button',
@@ -63,7 +78,7 @@ class Button extends Accounts.ui.Button {
           disabled ? 'disabled' : '',
           className
         ].join(' ') } type={ type } disabled={ disabled }
-        onClick={ onClick }>{ label }</button>
+        onClick={ onClick }>{ icon ? (<i className={["icon", icon].join(' ')} />) : null }{ label }</button>
     );
   }
 }
@@ -98,15 +113,57 @@ class Field extends Accounts.ui.Field {
         <div className="ui fluid input">
           <input id="password" name="password" style={{display: 'none'}} />
           <input id={ id }
-            name={ id }
-            type={ type }
-            autoCapitalize={ type == 'email' ? 'none' : false }
-            autoCorrect="off"
-            onChange={ onChange }
-            placeholder={ hint } defaultValue={ defaultValue } />
+                 name={ id }
+                 type={ type }
+                 autoCapitalize={ type == 'email' ? 'none' : false }
+                 autoCorrect="off"
+                 onChange={ onChange }
+                 placeholder={ hint } defaultValue={ defaultValue } />
         </div>
       </div>
     ) : null;
+  }
+}
+export class PasswordOrService extends Accounts.ui.PasswordOrService {
+  render() {
+    let { className, style = {} } = this.props;
+    let { hasPasswordService, services } = this.state;
+    labels = services;
+    if (services.length > 2) {
+      labels = [];
+    }
+
+    if (hasPasswordService && services.length > 0) {
+      return (
+        <p style={ style } className={ className }>
+          { `${T9n.get('or use')} ${ labels.join(' / ') }` }
+        </p>
+      );
+    }
+    return null;
+  }
+}
+class SocialButtons extends Accounts.ui.SocialButtons {
+  render() {
+    let { oauthServices = {}, className = "social-buttons" } = this.props;
+    return(
+      <div className={ className }>
+        {Object.keys(oauthServices).map((id, i) => {
+          var mapObj = {
+             google:"google plus",
+             "meteor-developer": ""
+          };
+          let serviceClass = id.replace(/google|meteor\-developer/gi, (matched) => {
+            return mapObj[matched];
+          });
+          return (
+            <Accounts.ui.Button key={i}
+                                className={["ui button", serviceClass].join(' ')}
+                                icon={serviceClass} {...oauthServices[id]} />
+          );
+        })}
+      </div>
+    );
   }
 }
 class FormMessage extends Accounts.ui.FormMessage {}
@@ -120,7 +177,10 @@ Accounts.ui.Buttons = Buttons;
 Accounts.ui.Button = Button;
 Accounts.ui.Fields = Fields;
 Accounts.ui.Field = Field;
+Accounts.ui.PasswordOrService = PasswordOrService;
+Accounts.ui.SocialButtons = SocialButtons;
 Accounts.ui.FormMessage = FormMessage;
 
 // Export the themed version.
-export { Accounts as default };
+export { Accounts, STATES };
+export default Accounts;

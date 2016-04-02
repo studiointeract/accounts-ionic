@@ -1,13 +1,13 @@
 # Semantic UI – Accounts UI for React in Meteor 1.3
 
-Current version 1.0.0
+Current version 1.1.1
 
-![Semantic UI – Accounts UI for React in Meteor 1.3](https://raw.githubusercontent.com/studiointeract/accounts-semantic/master/accounts-semantic.gif)
+![Semantic UI – Accounts UI for React in Meteor 1.3](https://raw.githubusercontent.com/studiointeract/accounts-semantic/master/accounts-semantic.png)
 
 ## Features
 
 1. **[Easy to use](https://github.com/studiointeract/accounts-ui#using-accounts-ui)**, mixing the ideas of useraccounts configuration and accounts-ui that everyone already knows and loves.
-3. **[Components](https://github.com/studiointeract/accounts-ui#components-available)** are everywhere, and extensible by replacing them on Accounts.ui.
+3. **[Components](https://github.com/studiointeract/accounts-ui#available-components)** are everywhere, and extensible by replacing them on Accounts.ui.
 4. **[Basic routing](https://github.com/studiointeract/accounts-ui#configuration)** included, redirections when the user clicks a link in an email or when signing in or out.
 5. **[Unstyled](https://github.com/studiointeract/accounts-ui#styling)** is the default, no CSS included.
 6. **[No password](https://github.com/studiointeract/accounts-ui#no-password-required)** sign up and sign in are included.
@@ -27,7 +27,7 @@ Current version 1.0.0
 
 We support the standard [configuration in the account-ui package](http://docs.meteor.com/#/full/accounts_ui_config). But have extended with some new options.
 
-### [Accounts.ui.config(options)](https://github.com/std/accounts-ui#configuration)
+> [Accounts.ui.config(options)](https://github.com/std/accounts-ui#configuration)
 
 ### Example setup (Meteor 1.3)
 
