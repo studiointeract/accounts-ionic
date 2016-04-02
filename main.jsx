@@ -40,16 +40,16 @@ class Form extends Accounts.ui.Form {
           <Button {...buttons['signOut']} type="submit" />
         ): null }
         { buttons['switchToSignIn'] ? (
-          <Button {...buttons['switchToSignIn']} type="button" />
+          <Button {...buttons['switchToSignIn']} type="link" className="ui button" />
         ): null }
         { buttons['switchToSignUp'] ? (
-          <Button {...buttons['switchToSignUp']} type="button" />
+          <Button {...buttons['switchToSignUp']} type="link" className="ui button" />
         ): null }
         { buttons['switchToChangePassword'] ? (
-          <Button {...buttons['switchToChangePassword']} type="button" />
+          <Button {...buttons['switchToChangePassword']} type="link" className="ui button" />
         ): null }
         { buttons['switchToSignOut'] ? (
-          <Button {...buttons['switchToSignOut']} type="button" />
+          <Button {...buttons['switchToSignOut']} type="link" className="ui button" />
         ): null }
         { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
           <div className="or-sep">
@@ -68,17 +68,30 @@ class Form extends Accounts.ui.Form {
 class Buttons extends Accounts.ui.Buttons {}
 class Button extends Accounts.ui.Button {
   render() {
-    const { label, type, disabled = false, onClick, className, icon } = this.props;
+    const {
+      label,
+      href = null,
+      type,
+      disabled = false,
+      onClick,
+      className,
+      icon
+    } = this.props;
     return type == 'link' ? (
-      <a style={{cursor: 'pointer'}} className={ className } onClick={ onClick }>{ icon ? (<i className={["icon", icon].join(' ')} />) : null }{ label }</a>
+      <a href={ href }
+         style={{cursor: 'pointer'}}
+         className={ className }
+         onClick={ onClick }>{ icon ? (<i className={["icon", icon].join(' ')} />) : null }{ label }</a>
     ) : (
       <button className={ [
-          'ui button',
-          type == 'submit' ? 'primary' : '',
-          disabled ? 'disabled' : '',
-          className
-        ].join(' ') } type={ type } disabled={ disabled }
-        onClick={ onClick }>{ icon ? (<i className={["icon", icon].join(' ')} />) : null }{ label }</button>
+                'ui button',
+                type == 'submit' ? 'primary' : '',
+                disabled ? 'disabled' : '',
+                className
+              ].join(' ') }
+              type={ type } 
+              disabled={ disabled }
+              onClick={ onClick }>{ icon ? (<i className={["icon", icon].join(' ')} />) : null }{ label }</button>
     );
   }
 }
