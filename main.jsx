@@ -23,7 +23,7 @@ class Form extends Accounts.ui.Form {
       formState
     } = this.props;
     return (
-      <form className={[ "accounts ui form", className ].join(' ')}>
+      <form ref={(ref) => this.form = ref} className={[ "accounts ui form", className ].join(' ')}>
         {Object.keys(fields).length > 0 ? (
           <Accounts.ui.Fields fields={ fields } />
         ): null }
