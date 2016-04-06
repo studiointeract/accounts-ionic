@@ -1,4 +1,5 @@
 import React from 'react';
+import { _ } from 'meteor/underscore';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 
 /**
@@ -149,7 +150,7 @@ export class PasswordOrService extends Accounts.ui.PasswordOrService {
     if (hasPasswordService && services.length > 0) {
       return (
         <p style={ style } className={ className }>
-          { `${T9n.get('or use')} ${ labels.join(' / ') }` }
+          { `${T9n.get('orUse')} ${ labels.join(' / ') }` }
         </p>
       );
     }
@@ -172,7 +173,7 @@ class SocialButtons extends Accounts.ui.SocialButtons {
           return (
             <Accounts.ui.Button key={i}
                                 className={["ui button", serviceClass].join(' ')}
-                                icon={serviceClass} {...oauthServices[id]} />
+                                icon={serviceClass} {..._.omit(oauthServices[id], "className")} />
           );
         })}
       </div>
