@@ -1,8 +1,8 @@
-# Semantic UI – Accounts UI for React in Meteor 1.3
+# Ionic – Accounts UI for React in Meteor 1.3
 
-Current version 1.1.7
+Current version 1.0.0
 
-![Semantic UI – Accounts UI for React in Meteor 1.3](https://raw.githubusercontent.com/studiointeract/accounts-semantic/master/accounts-semantic.png)
+![Ionic – Accounts UI for React in Meteor 1.3](https://raw.githubusercontent.com/studiointeract/accounts-ionic/master/accounts-ionic.png)
 
 ## Features
 
@@ -22,7 +22,7 @@ Current version 1.1.7
 
 ## Installation
 
-`meteor add std:accounts-semantic`
+`meteor add std:accounts-ionic`
 
 ## Configuration
 
@@ -33,13 +33,13 @@ We support the standard [configuration in the account-ui package](http://docs.me
 ### Example setup (Meteor 1.3)
 
 `meteor add accounts-password`  
-`meteor add semantic:ui-css`  
-`meteor add std:accounts-semantic`
+`npm i --save reactionic`  
+`meteor add std:accounts-ionic`
 
 ```javascript
 
 import React from 'react';
-import { Accounts } from 'meteor/std:accounts-semantic';
+import { Accounts } from 'meteor/std:accounts-ionic';
 
 Accounts.ui.config({
   passwordSignupFields: 'NO_PASSWORD',
@@ -55,14 +55,14 @@ if (Meteor.isClient) {
 ## Example setup using FlowRouter (Meteor 1.3)
 
 `meteor add accounts-password`  
-`meteor add semantic:ui-css`  
+`npm i --save reactionic`  
 `meteor add std:accounts-semantic`  
 `meteor add kadira:flow-router-ssr`
 
 ```javascript
 
 import { FlowRouter } from 'meteor/kadira:flow-router-ssr';
-import { Accounts } from 'meteor/std:accounts-semantic';
+import { Accounts } from 'meteor/std:accounts-ionic';
 import React from 'react';
 
 Accounts.ui.config({

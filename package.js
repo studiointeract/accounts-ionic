@@ -1,8 +1,8 @@
 Package.describe({
-  name: 'std:accounts-semantic',
-  version: '1.1.7',
-  summary: 'Semantic UI – Accounts UI for React in Meteor 1.3',
-  git: 'https://github.com/studiointeract/accounts-semantic',
+  name: 'std:accounts-ionic',
+  version: '1.0.0',
+  summary: 'Ionic – Accounts UI for React in Meteor 1.3',
+  git: 'https://github.com/studiointeract/accounts-ionic',
   documentation: 'README.md'
 });
 

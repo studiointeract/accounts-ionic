@@ -26,41 +26,43 @@ class Form extends Accounts.ui.Form {
     return (
       <form ref={(ref) => this.form = ref} className={[ "accounts ui form", className ].join(' ')}>
         {Object.keys(fields).length > 0 ? (
-          <Accounts.ui.Fields fields={ fields } />
+          <Accounts.ui.Fields fields={ fields } formState={ formState } />
         ): null }
-        { buttons['switchToPasswordReset'] ? (
-          <div className="field">
-            <Accounts.ui.Button {...buttons['switchToPasswordReset']} />
-          </div>
-        ): null }
-        {_.values(_.omit(buttons, 'switchToPasswordReset', 'switchToSignIn',
-          'switchToSignUp', 'switchToChangePassword', 'switchToSignOut', 'signOut')).map((button, i) =>
-          <Button {...button} key={i} />
-        )}
-        { buttons['signOut'] ? (
-          <Button {...buttons['signOut']} type="submit" />
-        ): null }
-        { buttons['switchToSignIn'] ? (
-          <Button {...buttons['switchToSignIn']} type="link" className="ui button" />
-        ): null }
-        { buttons['switchToSignUp'] ? (
-          <Button {...buttons['switchToSignUp']} type="link" className="ui button" />
-        ): null }
-        { buttons['switchToChangePassword'] ? (
-          <Button {...buttons['switchToChangePassword']} type="link" className="ui button" />
-        ): null }
-        { buttons['switchToSignOut'] ? (
-          <Button {...buttons['switchToSignOut']} type="link" className="ui button" />
-        ): null }
-        { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
-          <div className="or-sep">
-            <Accounts.ui.PasswordOrService oauthServices={ oauthServices } />
-          </div>
-        ) : null }
-        { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
-            <Accounts.ui.SocialButtons oauthServices={ oauthServices } />
-        ) : null }
-        <Accounts.ui.FormMessage className="ui message" style={{display: 'block'}} {...message} />
+        <div className="padding">
+          { buttons['switchToPasswordReset'] ? (
+            <div className="field">
+              <Accounts.ui.Button {...buttons['switchToPasswordReset']} className="button-light" />
+            </div>
+          ): null }
+          {_.values(_.omit(buttons, 'switchToPasswordReset', 'switchToSignIn',
+            'switchToSignUp', 'switchToChangePassword', 'switchToSignOut', 'signOut')).map((button, i) =>
+            <Button {...button} key={i} />
+          )}
+          { buttons['signOut'] ? (
+            <Button {...buttons['signOut']} type="submit" />
+          ): null }
+          { buttons['switchToSignIn'] ? (
+            <Button {...buttons['switchToSignIn']} type="link" className="button-block" />
+          ): null }
+          { buttons['switchToSignUp'] ? (
+            <Button {...buttons['switchToSignUp']} type="link" className="button-block" />
+          ): null }
+          { buttons['switchToChangePassword'] ? (
+            <Button {...buttons['switchToChangePassword']} type="link" className="button-block" />
+          ): null }
+          { buttons['switchToSignOut'] ? (
+            <Button {...buttons['switchToSignOut']} type="link" className="button-block" />
+          ): null }
+          { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
+            <div className="or-sep">
+              <Accounts.ui.PasswordOrService oauthServices={ oauthServices } />
+            </div>
+          ) : null }
+          { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
+              <Accounts.ui.SocialButtons oauthServices={ oauthServices } />
+          ) : null }
+          <Accounts.ui.FormMessage className="ui message" style={{display: 'block'}} {...message} />
+        </div>
       </form>
     );
   }
@@ -69,7 +71,7 @@ class Form extends Accounts.ui.Form {
 class Buttons extends Accounts.ui.Buttons {}
 class Button extends Accounts.ui.Button {
   render() {
-    const {
+    let {
       label,
       href = null,
       type,
@@ -78,31 +80,44 @@ class Button extends Accounts.ui.Button {
       className,
       icon
     } = this.props;
+
+    switch (icon) {
+      case 'google':
+        icon = 'googleplus';
+      default:
+        icon = 'ion-social-' + icon;
+        break;
+    }
+
     return type == 'link' ? (
       <a href={ href }
          style={{cursor: 'pointer'}}
-         className={ className }
+         className={ [
+           'button',
+           className
+         ].join(' ') }
          onClick={ onClick }>{ icon ? (<i className={["icon", icon].join(' ')} />) : null }{ label }</a>
     ) : (
       <button className={ [
-                'ui button',
-                type == 'submit' ? 'primary' : '',
+                'button button-block',
+                className,
+                type == 'submit' ? 'button-energized' : '',
                 disabled ? 'disabled' : '',
-                className
+                icon ? 'icon-left ' + icon : ''
               ].join(' ') }
               type={ type } 
               disabled={ disabled }
-              onClick={ onClick }>{ icon ? (<i className={["icon", icon].join(' ')} />) : null }{ label }</button>
+              onClick={ onClick }>{ label }</button>
     );
   }
 }
 class Fields extends Accounts.ui.Fields {
   render () {
-    let { fields = {}, className = "field" } = this.props;
+    let { fields = {}, className, formState } = this.props;
     return (
       <div className={ className }>
         {Object.keys(fields).map((id, i) =>
-          <Accounts.ui.Field {...fields[id]} key={i} />
+          <Accounts.ui.Field {...fields[id]} key={i} formState={ formState } />
         )}
       </div>
     );
@@ -110,31 +125,44 @@ class Fields extends Accounts.ui.Fields {
 }
 class Field extends Accounts.ui.Field {
   render() {
-    const {
+    let {
       id,
       hint,
       label,
       type = 'text',
       onChange,
       required = false,
-      className,
-      defaultValue = ""
+      className = "item item-input",
+      defaultValue = "",
+      formState
     } = this.props;
+
+    let placeholder = hint;
+
+    switch (formState) {
+      case STATES.SIGN_IN:
+        placeholder = null;
+        break;
+      case STATES.SIGN_UP:
+      default:
+        className += " item-stacked-label";
+        placeholder = hint;
+        break;
+    }
+
     const { mount = true } = this.state;
     return mount ? (
-      <div className={["ui field", required ? "required" : ""].join(' ')}>
-        <label htmlFor={ id }>{ label }</label>
-        <div className="ui fluid input">
-          <input id="password" name="password" style={{display: 'none'}} />
-          <input id={ id }
-                 name={ id }
-                 type={ type }
-                 autoCapitalize={ type == 'email' ? 'none' : false }
-                 autoCorrect="off"
-                 onChange={ onChange }
-                 placeholder={ hint } defaultValue={ defaultValue } />
-        </div>
-      </div>
+      <label className={[ className, required ? "required" : ""].join(' ')}>
+        <span className="input-label">{ label }</span>
+        <input id="password" name="password" style={{display: 'none'}} />
+        <input id={ id }
+               name={ id }
+               type={ type }
+               autoCapitalize={ type == 'email' ? 'none' : false }
+               autoCorrect="off"
+               onChange={ onChange }
+               placeholder={ placeholder } defaultValue={ defaultValue } />
+      </label>
     ) : null;
   }
 }

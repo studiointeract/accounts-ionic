@@ -1,14 +1,137 @@
+$primary: #de4f4f;
+$secondary: #999;
+$facebook: #3b5998;
+$twitter: #0084b4;
+$google: #dc4a38;
+$linkedin: #1f88be;
+$instagram: #49769c;
+$youtube: #cc181e;
+$meteor-developer: #de4f4f;
+$meetup: #E0393E;
+$github: #60b044;
+$weibo: #FFA00A;
+
 .accounts.ui.form {
   .or-sep {
-    padding-top: 1em;
+    padding-top: 1.5em;
     padding-bottom: 1em;
-  }
-  button, .button, a {
-    margin-right: 6px;
+    text-align: center;
   }
   .social-buttons {
-    .button {
-      margin-bottom: 0.75em;
+    a, button {
+      &[disabled] {
+        opacity: 0.5;
+      }
+      &.facebook {
+        color: white;
+        background-color: $facebook;
+        &:focus,
+        &:hover {
+          background-color: lighten($facebook, 5%);
+        }
+        &:active {
+          background-color: darken($facebook, 5%);
+        }
+      }
+      &.twitter {
+        color: white;
+        background-color: $twitter;
+        &:focus,
+        &:hover {
+          background-color: lighten($twitter, 5%);
+        }
+        &:active {
+          background-color: darken($twitter, 5%);
+        }
+      }
+      &.google {
+        color: white;
+        background-color: $google;
+        &:focus,
+        &:hover {
+          background-color: lighten($google, 5%);
+        }
+        &:active {
+          background-color: darken($google, 5%);
+        }
+      }
+      &.linkedin {
+        color: white;
+        background-color: $linkedin;
+        &:focus,
+        &:hover {
+          background-color: lighten($linkedin, 5%);
+        }
+        &:active {
+          background-color: darken($linkedin, 5%);
+        }
+      }
+      &.instagram {
+        color: white;
+        background-color: $instagram;
+        &:focus,
+        &:hover {
+          background-color: lighten($instagram, 5%);
+        }
+        &:active {
+          background-color: darken($instagram, 5%);
+        }
+      }
+      &.youtube {
+        color: white;
+        background-color: $youtube;
+        &:focus,
+        &:hover {
+          background-color: lighten($youtube, 5%);
+        }
+        &:active {
+          background-color: darken($youtube, 5%);
+        }
+      }
+      &.meteor-developer {
+        color: white;
+        background-color: $meteor-developer;
+        &:focus,
+        &:hover {
+          background-color: lighten($meetup, 5%);
+        }
+        &:active {
+          background-color: darken($meetup, 5%);
+        }
+      }
+      &.meetup {
+        color: white;
+        background-color: $meetup;
+        &:focus,
+        &:hover {
+          background-color: lighten($meetup, 5%);
+        }
+        &:active {
+          background-color: darken($meetup, 5%);
+        }
+      }
+      &.github {
+        color: white;
+        background-color: $github;
+        &:focus,
+        &:hover {
+          background-color: lighten($github, 5%);
+        }
+        &:active {
+          background-color: darken($github, 5%);
+        }
+      }
+      &.weibo {
+        color: white;
+        background-color: $weibo;
+        &:focus,
+        &:hover {
+          background-color: lighten($weibo, 5%);
+        }
+        &:active {
+          background-color: darken($weibo, 5%);
+        }
+      }
     }
   }
 }
