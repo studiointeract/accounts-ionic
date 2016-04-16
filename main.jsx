@@ -1,6 +1,19 @@
 import React from 'react';
 import { _ } from 'meteor/underscore';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
+import { T9n } from 'meteor/softwarerero:accounts-t9n';
+
+// XXX Remove when this PR is merged:
+T9n.map('en', {
+  alert: {
+    ok: 'Ok',
+    type: {
+      info: 'Notice',
+      error: 'Error',
+      warning: 'Warning'
+    }
+  }
+});
 
 /**
  * Form.propTypes = {
@@ -208,7 +221,38 @@ class SocialButtons extends Accounts.ui.SocialButtons {
     );
   }
 }
-class FormMessage extends Accounts.ui.FormMessage {}
+class FormMessage extends Accounts.ui.FormMessage {
+  componentWillReceiveProps(nextProps) {
+    var ionUpdatePopup = this.context.ionUpdatePopup;
+    let { message, type } = nextProps;
+
+    var ionPopup = this.context.ionPopup;
+    if (this.timeout == null && message && _.isEmpty(ionPopup)) {
+      this.timeout = setTimeout(() => {
+        // Check so that we're still mounted.
+        if (typeof this._reactInternalInstance !== 'undefined') {
+          ionUpdatePopup({
+            popupType: 'alert',
+            title: T9n.get(`alert.type.${type}`),
+            template: message,
+            okText: T9n.get('alert.ok'),
+            onOk: () => {
+              this.timeout = null;
+              this.setState({ message: null });
+            }
+          });
+        }
+      }, 500);
+    }
+  }
+  render() {
+    return null;
+  }
+}
+FormMessage.contextTypes = {
+  ionPopup: React.PropTypes.object,
+  ionUpdatePopup: React.PropTypes.func
+};
 // Notice! Accounts.ui.LoginForm manages all state logic at the moment, so avoid
 // overwriting this one, but have a look at it and learn how it works. And pull
 // requests altering how that works are welcome.
