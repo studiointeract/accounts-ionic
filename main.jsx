@@ -225,7 +225,7 @@ class SocialButtons extends Accounts.ui.SocialButtons {
 class FormMessage extends Accounts.ui.FormMessage {
   componentWillReceiveProps(nextProps) {
     var ionUpdatePopup = this.context.ionUpdatePopup;
-    let { message, type } = nextProps;
+    let { message, type = 'error'} = nextProps;
 
     var ionPopup = this.context.ionPopup;
     if (this.timeout == null && message && _.isEmpty(ionPopup)) {
