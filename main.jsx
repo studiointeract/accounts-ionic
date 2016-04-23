@@ -223,9 +223,14 @@ class SocialButtons extends Accounts.ui.SocialButtons {
   }
 }
 class FormMessage extends Accounts.ui.FormMessage {
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextState) {
     var ionUpdatePopup = this.context.ionUpdatePopup;
     let { message, type = 'error'} = nextProps;
+
+    if (message && (this.state || {}).message == message) {
+      this.setState({ message: null });
+      return;
+    }
 
     var ionPopup = this.context.ionPopup;
     if (this.timeout == null && message && _.isEmpty(ionPopup)) {
@@ -239,7 +244,7 @@ class FormMessage extends Accounts.ui.FormMessage {
             okText: T9n.get('alert.ok'),
             onOk: () => {
               this.timeout = null;
-              this.setState({ message: null });
+              this.setState({ message: message });
             }
           });
         }
