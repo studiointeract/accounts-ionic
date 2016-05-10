@@ -1,6 +1,6 @@
 # Ionic – Accounts UI for React in Meteor 1.3
 
-Current version 1.0.2
+Current version 1.0.3
 
 ![Ionic – Accounts UI for React in Meteor 1.3](https://raw.githubusercontent.com/studiointeract/accounts-ionic/master/accounts-ionic.gif)
 
