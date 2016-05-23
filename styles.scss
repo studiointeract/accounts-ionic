@@ -12,10 +12,34 @@ $github: #60b044;
 $weibo: #FFA00A;
 
 .accounts.ui.form {
+  .switch-back {
+    padding-top: 24px;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid #dce0e0;
+    margin: 0;
+  }
+  .switch {
+    .item {
+      padding-left: 11px;
+      .button {
+        border-radius: 2px;
+        font-size: 16px;
+        right: 11px;
+        padding: 2px 16px;
+      }
+    }
+  }
   .or-sep {
-    padding-top: 1.5em;
-    padding-bottom: 1em;
     text-align: center;
+    span {
+      padding: 0 16px;
+      background: white;
+    }
+    hr {
+      margin: -10px 0 10px;
+    }
   }
   .social-buttons {
     a, button {
@@ -45,14 +69,26 @@ $weibo: #FFA00A;
         }
       }
       &.google {
-        color: white;
-        background-color: $google;
+        border: solid 1px #C4C4C4;
+        &:before {
+          content: '';
+          width: 20px;
+          float: left;
+          padding-right: .2em;
+          background: url("/packages/std_accounts-ionic/google.png");
+          background-size: contain;
+          background-position: center;
+          background-repeat: no-repeat;
+          height: 54px;
+          margin-top: -1px;
+        }
         &:focus,
         &:hover {
-          background-color: lighten($google, 5%);
+          border-color: lighten(#C4C4C4, 10%);
         }
         &:active {
-          background-color: darken($google, 5%);
+          border-color: darken(#C4C4C4, 10%);
+          background-color: darken(white, 5%);
         }
       }
       &.linkedin {

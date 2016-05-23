@@ -24,6 +24,13 @@ T9n.map('en', {
  * };
  */
 class Form extends Accounts.ui.Form {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showPasswordForm: false
+    };
+  }
+
   render() {
     const {
       hasPasswordService,
@@ -36,45 +43,90 @@ class Form extends Accounts.ui.Form {
       className,
       formState
     } = this.props;
+    const { showPasswordForm } = this.state;
     return (
       <form ref={(ref) => this.form = ref} className={[ "accounts ui form", className ].join(' ')}>
-        {Object.keys(fields).length > 0 ? (
-          <Accounts.ui.Fields fields={ fields } formState={ formState } />
-        ): null }
+        { showPasswordForm && (formState == STATES.SIGN_IN || formState == STATES.SIGN_UP) ? (
+          <div className="padding switch-back" style={{ textAlign: "center"}}>
+            <Accounts.ui.PasswordOrService formState={ formState } oauthServices={ oauthServices } />
+          </div>
+        ) : (
+          <div className="padding">
+            { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
+                <Accounts.ui.SocialButtons formState={ formState } oauthServices={ oauthServices } />
+            ) : null }
+          </div>
+        )}
         <div className="padding">
-          { buttons['switchToPasswordReset'] ? (
-            <div className="field">
-              <Accounts.ui.Button {...buttons['switchToPasswordReset']} className="button-light" />
-            </div>
-          ): null }
-          {_.values(_.omit(buttons, 'switchToPasswordReset', 'switchToSignIn',
-            'switchToSignUp', 'switchToChangePassword', 'switchToSignOut', 'signOut')).map((button, i) =>
-            <Button {...button} key={i} />
-          )}
-          { buttons['signOut'] ? (
-            <Button {...buttons['signOut']} type="submit" />
-          ): null }
-          { buttons['switchToSignIn'] ? (
-            <Button {...buttons['switchToSignIn']} type="link" className="button-block" />
-          ): null }
-          { buttons['switchToSignUp'] ? (
-            <Button {...buttons['switchToSignUp']} type="link" className="button-block" />
-          ): null }
-          { buttons['switchToChangePassword'] ? (
-            <Button {...buttons['switchToChangePassword']} type="link" className="button-block" />
-          ): null }
-          { buttons['switchToSignOut'] ? (
-            <Button {...buttons['switchToSignOut']} type="link" className="button-block" />
-          ): null }
           { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
             <div className="or-sep">
-              <Accounts.ui.PasswordOrService oauthServices={ oauthServices } />
+              <span>{ T9n.get('OR').toLowerCase() }</span>
+              <hr />
             </div>
           ) : null }
-          { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
-              <Accounts.ui.SocialButtons oauthServices={ oauthServices } />
-          ) : null }
-          <Accounts.ui.FormMessage className="ui message" style={{display: 'block'}} {...message} />
+        </div>
+        { showPasswordForm ? (
+          <div>
+            {Object.keys(fields).length > 0 ? (
+              <Accounts.ui.Fields fields={ fields } formState={ formState } />
+            ): null }
+            <div className="padding">
+              { buttons['switchToPasswordReset'] ? (
+                <div className="field">
+                  <Accounts.ui.Button {...buttons['switchToPasswordReset']} className="button-light" />
+                </div>
+              ): null }
+              {_.values(_.omit(buttons, 'switchToPasswordReset', 'switchToSignIn',
+                'switchToSignUp', 'switchToChangePassword', 'switchToSignOut', 'signOut')).map((button, i) =>
+                <Button {...button} key={i} />
+              )}
+              { buttons['signOut'] ? (
+                <Button {...buttons['signOut']} type="submit" />
+              ): null }
+              { buttons['switchToChangePassword'] ? (
+                <Button {...buttons['switchToChangePassword']} type="link" className="button-block" />
+              ): null }
+              <Accounts.ui.FormMessage className="ui message" style={{display: 'block'}} {...message} />
+            </div>
+          </div>
+        ) : (
+          <div className="padding">
+            <div className="field">
+              <Accounts.ui.Button
+                label={ T9n.get('signUpWithYourEmailAddress') }
+                className="button-block"
+                type={ 'submit' }
+                onClick={ () => this.setState({ showPasswordForm: true }) }
+              />
+            </div>
+          </div>
+        )}
+
+        { buttons['switchToSignOut'] ? (
+          <Button {...buttons['switchToSignOut']} type="link" className="button-block" />
+        ): null }
+        <hr />
+        <div className="list clean switch">
+          { buttons['switchToSignIn'] ? (
+            <div className="item item-button-right">
+              { T9n.get('ifYouAlreadyHaveAnAccount') }
+              <Button
+                {...buttons['switchToSignIn']}
+                type="link"
+                className="button button-outline button-assertive"
+              />
+            </div>
+          ): null }
+          { buttons['switchToSignUp'] ? (
+            <div className="item item-button-right">
+              { T9n.get('dontHaveAnAccount') }
+              <Button
+                {...buttons['switchToSignUp']}
+                type="link"
+                className="button button-outline button-assertive"
+              />
+            </div>
+          ): null }
         </div>
       </form>
     );
@@ -182,7 +234,7 @@ class Field extends Accounts.ui.Field {
 }
 export class PasswordOrService extends Accounts.ui.PasswordOrService {
   render() {
-    let { className, style = {} } = this.props;
+    let { className, style = {}, formState } = this.props;
     let { hasPasswordService, services } = this.state;
     labels = services;
     if (services.length > 2) {
@@ -191,8 +243,13 @@ export class PasswordOrService extends Accounts.ui.PasswordOrService {
 
     if (hasPasswordService && services.length > 0) {
       return (
-        <p style={ style } className={ className }>
-          { `${T9n.get('orUse')} ${ labels.join(' / ') }` }
+        <p style={ style } className={ className }>
+          { formState == STATES.SIGN_UP ?
+            `${ T9n.get('signUp') } ${ T9n.get('with') } ${ labels.join(' / ') }`
+          : null }
+          { formState == STATES.SIGN_IN ?
+            `${ T9n.get('signIn') } ${ T9n.get('with') } ${ labels.join(' / ') }`
+          : null }
         </p>
       );
     }
@@ -201,21 +258,32 @@ export class PasswordOrService extends Accounts.ui.PasswordOrService {
 }
 class SocialButtons extends Accounts.ui.SocialButtons {
   render() {
-    let { oauthServices = {}, className = "social-buttons" } = this.props;
+    const { oauthServices = {}, className = "social-buttons", formState } = this.props;
     return(
       <div className={ className }>
         {Object.keys(oauthServices).map((id, i) => {
           var mapObj = {
-             google:"google plus",
-             "meteor-developer": ""
+            "meteor-developer": ""
           };
-          let serviceClass = id.replace(/google|meteor\-developer/gi, (matched) => {
+          let serviceClass = id.replace(/meteor\-developer/gi, (matched) => {
             return mapObj[matched];
           });
+          const serviceName = oauthServices[id].label;
+          let label = oauthServices[id].label;
+          if (formState == STATES.SIGN_UP) {
+             label = `${ T9n.get('signUp') } ${ T9n.get('with') } ${ serviceName }`;
+          }
+          else if (formState == STATES.SIGN_IN) {
+            label =  `${ T9n.get('signIn') } ${ T9n.get('with') } ${ serviceName }`;
+          }
           return (
-            <Accounts.ui.Button key={i}
-                                className={["ui button", serviceClass].join(' ')}
-                                icon={serviceClass} {..._.omit(oauthServices[id], "className")} />
+            <Accounts.ui.Button
+              key={i}
+              className={["ui button", serviceClass].join(' ')}
+              icon={serviceClass}
+              {..._.omit(oauthServices[id], "className")}
+              label={ label }
+            />
           );
         })}
       </div>

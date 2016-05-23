@@ -1,6 +1,6 @@
 Package.describe({
   name: 'std:accounts-ionic',
-  version: '1.0.3',
+  version: '1.1.0',
   summary: 'Ionic – Accounts UI for React in Meteor 1.3',
   git: 'https://github.com/studiointeract/accounts-ionic',
   documentation: 'README.md'
@@ -16,6 +16,10 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'styles.scss'
+  ], 'client');
+
+  api.addAssets([
+    'google.png'
   ], 'client');
 
   api.mainModule('main.jsx');
