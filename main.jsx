@@ -52,11 +52,11 @@ class Form extends Accounts.ui.Form {
             <Accounts.ui.PasswordOrService formState={ formState } oauthServices={ oauthServices } />
           </div>
         ) : (
-          <div className="padding">
-            { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
+          formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
+            <div className="padding">
               <Accounts.ui.SocialButtons formState={ formState } oauthServices={ oauthServices } />
-            ) : null }
-          </div>
+            </div>
+          ) : null
         )}
         { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
           <div className="or-sep">
@@ -64,7 +64,11 @@ class Form extends Accounts.ui.Form {
             <hr />
           </div>
         ) : null }
-        { showPasswordForm ? (
+        { showPasswordForm || (
+          formState == STATES.PROFILE
+          || formState == STATES.PASSWORD_CHANGE
+          || formState == STATES.PASSWORD_RESET
+        ) ? (
           <div>
             {Object.keys(fields).length > 0 ? (
               <Accounts.ui.Fields fields={ fields } formState={ formState } />
@@ -84,6 +88,9 @@ class Form extends Accounts.ui.Form {
               ): null }
               { buttons['switchToChangePassword'] ? (
                 <Button {...buttons['switchToChangePassword']} type="link" className="button-block" />
+              ): null }
+              { buttons['switchToSignOut'] ? (
+                <Button {...buttons['switchToSignOut']} type="link" className="button-block" />
               ): null }
               <Accounts.ui.FormMessage className="ui message" style={{display: 'block'}} {...message} />
             </div>
@@ -126,10 +133,6 @@ class Form extends Accounts.ui.Form {
             </div>
           </div>
         )}
-
-        { buttons['switchToSignOut'] ? (
-          <Button {...buttons['switchToSignOut']} type="link" className="button-block" />
-        ): null }
         <hr />
         <div className="list clean switch">
           { buttons['switchToSignIn'] ? (
