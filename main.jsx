@@ -47,24 +47,23 @@ class Form extends Accounts.ui.Form {
     return (
       <form ref={(ref) => this.form = ref} className={[ "accounts ui form", className ].join(' ')}>
         { showPasswordForm && (formState == STATES.SIGN_IN || formState == STATES.SIGN_UP) ? (
-          <div className="padding switch-back" style={{ textAlign: "center"}}>
+          <div onClick={ () => this.setState({ showPasswordForm: false }) }
+            className="padding switch-back" style={{ textAlign: "center"}}>
             <Accounts.ui.PasswordOrService formState={ formState } oauthServices={ oauthServices } />
           </div>
         ) : (
           <div className="padding">
             { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
-                <Accounts.ui.SocialButtons formState={ formState } oauthServices={ oauthServices } />
+              <Accounts.ui.SocialButtons formState={ formState } oauthServices={ oauthServices } />
             ) : null }
           </div>
         )}
-        <div className="padding">
-          { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
-            <div className="or-sep">
-              <span>{ T9n.get('OR').toLowerCase() }</span>
-              <hr />
-            </div>
-          ) : null }
-        </div>
+        { formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
+          <div className="or-sep">
+            <span>{ T9n.get('OR').toLowerCase() }</span>
+            <hr />
+          </div>
+        ) : null }
         { showPasswordForm ? (
           <div>
             {Object.keys(fields).length > 0 ? (
@@ -90,14 +89,40 @@ class Form extends Accounts.ui.Form {
             </div>
           </div>
         ) : (
-          <div className="padding">
+          <div>
             <div className="field">
-              <Accounts.ui.Button
-                label={ T9n.get('signUpWithYourEmailAddress') }
-                className="button-block"
-                type={ 'submit' }
-                onClick={ () => this.setState({ showPasswordForm: true }) }
-              />
+              { formState == STATES.SIGN_IN ? (
+                <div>
+                  {Object.keys(fields).length > 0 ? (
+                    <Accounts.ui.Fields fields={ fields } formState={ formState } />
+                  ): null }
+                  <div className="padding">
+                    { buttons['switchToPasswordReset'] ? (
+                      <div className="field">
+                        <Accounts.ui.Button {...buttons['switchToPasswordReset']} className="button-light" />
+                      </div>
+                    ): null }
+                    {_.values(_.omit(buttons, 'switchToPasswordReset', 'switchToSignIn',
+                      'switchToSignUp', 'switchToChangePassword', 'switchToSignOut', 'signOut')).map((button, i) =>
+                      <Button {...button} key={i} />
+                    )}
+                    { buttons['switchToChangePassword'] ? (
+                      <Button {...buttons['switchToChangePassword']} type="link" className="button-block" />
+                    ): null }
+                    <Accounts.ui.FormMessage className="ui message" style={{display: 'block'}} {...message} />
+                  </div>
+                </div>
+              ) : null }
+              { formState == STATES.SIGN_UP ? (
+                <div className="padding">
+                  <Accounts.ui.Button
+                    label={ T9n.get('signUpWithYourEmailAddress') }
+                    className="button-block"
+                    type={ 'submit' }
+                    onClick={ () => this.setState({ showPasswordForm: true }) }
+                  />
+                </div>
+              ) : null }
             </div>
           </div>
         )}
@@ -113,7 +138,7 @@ class Form extends Accounts.ui.Form {
               <Button
                 {...buttons['switchToSignIn']}
                 type="link"
-                className="button button-outline button-assertive"
+                className="button button-outline button-energized"
               />
             </div>
           ): null }
@@ -123,7 +148,7 @@ class Form extends Accounts.ui.Form {
               <Button
                 {...buttons['switchToSignUp']}
                 type="link"
-                className="button button-outline button-assertive"
+                className="button button-outline button-energized"
               />
             </div>
           ): null }
