@@ -12,6 +12,11 @@ $github: #60b044;
 $weibo: #FFA00A;
 
 .accounts.ui.form {
+  .ui.message {
+    text-align: center;
+    background: #F0F8FF;
+    padding: 10px 0;
+  }
   .switch-back {
     padding-top: 24px;
   }

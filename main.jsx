@@ -8,6 +8,7 @@ T9n.map('en', {
   alert: {
     ok: 'Ok',
     type: {
+      success: 'Success',
       info: 'Notice',
       error: 'Error',
       warning: 'Warning'
@@ -73,6 +74,11 @@ class Form extends Accounts.ui.Form {
             {Object.keys(fields).length > 0 ? (
               <Accounts.ui.Fields fields={ fields } formState={ formState } />
             ): null }
+            { message ? (
+              <div className="padding">
+                <Accounts.ui.FormMessage className="ui message" style={{display: 'block'}} {...message} />
+              </div>
+            ) : null}
             <div className="padding">
               { buttons['switchToPasswordReset'] ? (
                 <div className="field">
@@ -92,7 +98,6 @@ class Form extends Accounts.ui.Form {
               { buttons['switchToSignOut'] ? (
                 <Button {...buttons['switchToSignOut']} type="link" className="button-block" />
               ): null }
-              <Accounts.ui.FormMessage className="ui message" style={{display: 'block'}} {...message} />
             </div>
           </div>
         ) : (
@@ -103,10 +108,21 @@ class Form extends Accounts.ui.Form {
                   {Object.keys(fields).length > 0 ? (
                     <Accounts.ui.Fields fields={ fields } formState={ formState } />
                   ): null }
+                  { message ? (
+                    <div className="padding">
+                      <Accounts.ui.FormMessage className="ui message" style={{
+                        display: 'block',
+                        textAlign: 'center'
+                      }} {...message} />
+                    </div>
+                  ) : null}
                   <div className="padding">
                     { buttons['switchToPasswordReset'] ? (
                       <div className="field">
-                        <Accounts.ui.Button {...buttons['switchToPasswordReset']} className="button-light" />
+                        <Accounts.ui.Button
+                          {...buttons['switchToPasswordReset']}
+                          className="button-light"
+                        />
                       </div>
                     ): null }
                     {_.values(_.omit(buttons, 'switchToPasswordReset', 'switchToSignIn',
@@ -114,20 +130,32 @@ class Form extends Accounts.ui.Form {
                       <Button {...button} key={i} />
                     )}
                     { buttons['switchToChangePassword'] ? (
-                      <Button {...buttons['switchToChangePassword']} type="link" className="button-block" />
+                      <Button
+                        {...buttons['switchToChangePassword']}
+                        type="link" className="button-block"
+                      />
                     ): null }
-                    <Accounts.ui.FormMessage className="ui message" style={{display: 'block'}} {...message} />
                   </div>
                 </div>
               ) : null }
               { formState == STATES.SIGN_UP ? (
-                <div className="padding">
-                  <Accounts.ui.Button
-                    label={ T9n.get('signUpWithYourEmailAddress') }
-                    className="button-block"
-                    type={ 'submit' }
-                    onClick={ () => this.setState({ showPasswordForm: true }) }
-                  />
+                <div>
+                  { message ? (
+                    <div className="padding">
+                      <Accounts.ui.FormMessage className="ui message" style={{
+                        display: 'block',
+                        textAlign: 'center'
+                      }} {...message} />
+                    </div>
+                  ) : null}
+                  <div className="padding">
+                    <Accounts.ui.Button
+                      label={ T9n.get('signUpWithYourEmailAddress') }
+                      className="button-block"
+                      type={ 'submit' }
+                      onClick={ () => this.setState({ showPasswordForm: true }) }
+                    />
+                  </div>
                 </div>
               ) : null }
             </div>
@@ -319,46 +347,11 @@ class SocialButtons extends Accounts.ui.SocialButtons {
   }
 }
 class FormMessage extends Accounts.ui.FormMessage {
-  componentWillReceiveProps(nextProps, nextState) {
-    var ionUpdatePopup = this.context.ionUpdatePopup;
-    let { message, type = 'error'} = nextProps;
-
-    if (message && (this.state || {}).message == message) {
-      this.setState({ message: null });
-      return;
-    }
-
-    var ionPopup = this.context.ionPopup;
-    if (this.timeout == null && message && _.isEmpty(ionPopup)) {
-      this.timeout = setTimeout(() => {
-        // Check so that we're still mounted.
-        if (typeof this._reactInternalInstance !== 'undefined') {
-          ionUpdatePopup({
-            popupType: 'alert',
-            title: T9n.get(`alert.type.${type}`),
-            template: message,
-            okText: T9n.get('alert.ok'),
-            onOk: () => {
-              this.timeout = null;
-              this.setState({ message: message });
-            }
-          });
-        }
-      }, 500);
-    }
-  }
   render() {
-    return null;
+    const { message, type = 'error', className } = this.props;
+    return <div className={ className }>{ message }</div>;
   }
 }
-FormMessage.contextTypes = {
-  ionPopup: React.PropTypes.object,
-  ionUpdatePopup: React.PropTypes.func
-};
-// Notice! Accounts.ui.LoginForm manages all state logic at the moment, so avoid
-// overwriting this one, but have a look at it and learn how it works. And pull
-// requests altering how that works are welcome.
-
 // Alter provided default unstyled UI.
 Accounts.ui.Form = Form;
 Accounts.ui.Buttons = Buttons;
